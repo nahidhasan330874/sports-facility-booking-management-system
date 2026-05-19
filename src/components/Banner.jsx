@@ -8,7 +8,7 @@ export default function Banner() {
     <section className="overflow-hidden bg-white shadow mb-20">
       <div className="mx-auto grid min-h-[90vh] max-w-7xl grid-cols-1 items-center gap-10 px-6 py-16 lg:grid-cols-2">
         
-        {/* Left Side */}
+        
         <motion.div
           initial={{ x: -120, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -21,7 +21,7 @@ export default function Banner() {
             ⚽ Best Sports Booking Platform
           </span>
 
-          <h1 className="text-3xl font-extrabold leading-tight text-gray-900 lg:text-7xl">
+          <h1 className="text-3xl font-extrabold leading-tight text-gray-900 lg:text-6xl">
             Book Your
             <span className="block text-[#00C77B]">
               Dream Sports Arena
@@ -44,8 +44,7 @@ export default function Banner() {
             </button>
           </div>
         </motion.div>
-
-        {/* Right Side */}
+ 
         <motion.div
           initial={{ x: 120, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -54,7 +53,7 @@ export default function Banner() {
           }}
           className="relative flex justify-center"
         >
-          {/* Glow Effect */}
+         
           <div className="absolute h-72 w-72 rounded-full bg-[#00FF9D]/30 blur-3xl"></div>
 
           <Image
