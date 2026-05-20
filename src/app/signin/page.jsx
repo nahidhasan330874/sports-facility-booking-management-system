@@ -109,7 +109,8 @@ export default function LoginPage() {
       
             {error && <p className="text-red-500 text-sm">{error}</p>}
 
-            <Button
+        <div className="flex flex-col gap-2">
+                <Button
               type="submit"
               isLoading={loading}
               className="w-full  rounded-2xl bg-[#00FF9D] text-black font-bold mt-5"
@@ -125,6 +126,7 @@ export default function LoginPage() {
             <FcGoogle className="text-2xl" />
             Continue with Google
           </Button>
+        </div>
           </form>
 
          

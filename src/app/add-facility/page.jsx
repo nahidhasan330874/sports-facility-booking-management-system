@@ -1,3 +1,4 @@
+"use client"
 import {
   Button,
   FieldError,
@@ -8,12 +9,36 @@ import {
   TextField,
   Select,
 } from "@heroui/react";
+import { object } from "framer-motion/client";
 import React from "react";
 
 const AddFacility = () => {
+   const onSubmit = async(e) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.currentTarget);
+
+  const facility = Object.fromEntries(formData.entries());
+ console.log(facility)
+  const res = await fetch("http://localhost:5000/add-facility", {
+    method: 'POST',
+    headers:{
+        'content-type' :'application/json',
+
+    },
+    body: JSON.stringify(facility)
+ })
+
+ const data = await res.json()
+  
+ console.log(data)
+};
   return (
     <div className="mx-auto container bg-base-300 shadow-2xl mb-16 rounded-2xl">
-      <form className="p-10 space-y-8">
+      <form
+      onSubmit={onSubmit}
+      className="p-10 space-y-8">
+
         <h2 className="flex justify-center items-center text-2xl font-bold">
           Add a Facility
         </h2>
