@@ -72,7 +72,7 @@ const AddFacility = () => {
           </TextField>
 
       
-          <TextField name="availableTime " isRequired>
+          <TextField name="availableTime" isRequired>
             <Label>Available Time Slots</Label>
             <Input placeholder="8:00 PM - 9:00 AM" className="rounded-2xl" />
             <FieldError />
@@ -108,7 +108,7 @@ const AddFacility = () => {
           </div>
         </div>
 
-        {/* Buttons */}
+        
 
         <Button
           type="submit"
