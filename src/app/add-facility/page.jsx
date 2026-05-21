@@ -19,7 +19,7 @@ const AddFacility = () => {
   const formData = new FormData(e.currentTarget);
 
   const facility = Object.fromEntries(formData.entries());
- console.log(facility)
+  
   const res = await fetch("http://localhost:5000/add-facility", {
     method: 'POST',
     headers:{
@@ -31,7 +31,7 @@ const AddFacility = () => {
 
  const data = await res.json()
   
- console.log(data)
+ 
 };
   return (
     <div className="mx-auto container bg-base-300 shadow-2xl mb-16 rounded-2xl">

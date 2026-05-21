@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+
 import {
   Button,
   Card,
@@ -12,51 +11,39 @@ import {
   Input,
   Label,
   TextField,
+  toast,
 } from "@heroui/react";
 import { FcGoogle } from "react-icons/fc";
+import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 
 export default function RegisterPage() {
-  const router = useRouter();
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const handleRegister = async (e) => {
+  const onSubmit =  async(e) => {
     e.preventDefault();
 
-    setError("");
-    setLoading(true);
+    const formData = new FormData(e.currentTarget);
+    const user = Object.fromEntries(formData.entries());
+   
+    
+    const {data, error} = await authClient.signUp.email(
+        {
+            email:user.email,
+            password : user.password,
+            name :user.name,
+            image : user.photo
 
-    const form = new FormData(e.currentTarget);
+ 
 
-    const name = form.get("name");
-    const email = form.get("email");
-    const photo = form.get("photo");
-    const password = form.get("password");
-
-    try {
-      // register logic here
-      console.log({
-        name,
-        email,
-        photo,
-        password,
-      });
-
-      // success হলে home এ যাবে
-      router.push("/");
-    } catch (err) {
-      setError("Registration failed");
-    } finally {
-      setLoading(false);
+        }
+    )
+    
+    if(data){
+        redirect('/')
     }
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-    } catch (err) {
-      setError("Google login failed");
+    if(error){
+        toast.error('Failed in your Register')
     }
+
   };
 
   return (
@@ -69,8 +56,7 @@ export default function RegisterPage() {
         </CardHeader>
 
         <Card className="pb-8">
-          <form onSubmit={handleRegister} className="space-y-5">
-            {/* Name */}
+          <form onSubmit={onSubmit} className="space-y-5">
             <TextField
               name="name"
               type="text"
@@ -83,13 +69,12 @@ export default function RegisterPage() {
                   "bg-[#1F2937] border-gray-700 hover:border-[#00FF9D] focus-within:border-[#00FF9D]",
               }}
             >
-              {" "}
+              
               <Label>Name</Label>
-              <Input placeholder="Your Name" />
+              <Input placeholder="Your Name"/>
               <FieldError />
             </TextField>
 
-            {/* Email */}
             <TextField
               isRequired
               name="email"
@@ -107,7 +92,6 @@ export default function RegisterPage() {
               <FieldError />
             </TextField>
 
-            {/* Photo URL */}
             <TextField
               name="photo"
               type="url"
@@ -125,7 +109,6 @@ export default function RegisterPage() {
               <FieldError />
             </TextField>
 
-            {/* Password */}
             <TextField
               isRequired
               minLength={6}
@@ -153,21 +136,15 @@ export default function RegisterPage() {
               <FieldError />
             </TextField>
 
-            {/* Error */}
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-
-            {/* Register Button */}
             <div className="flex flex-col gap-2">
               <Button
                 type="submit"
-                isLoading={loading}
                 className="w-full rounded-2xl bg-[#00FF9D] text-black font-bold"
               >
                 Register
               </Button>
               <p className="flex justify-center text-gray-400 ">Or</p>
               <Button
-                onPress={handleGoogleLogin}
                 variant="bordered"
                 className="w-full rounded-2xl border border-gray-300 shadow "
               >
