@@ -11,11 +11,13 @@ import {
 } from "@heroui/react";
 import Image from "next/image";
 import { FaLocationDot } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
+
 
 export function BookingForm({ facility }) {
   const [loading, setLoading] = useState(false);
   const [hours, setHours] = useState(1);
-
+ const router = useRouter();
   const totalPrice = Number(hours) * Number(facility.price);
 
   const handleSubmit = async (e) => {
@@ -30,6 +32,7 @@ export function BookingForm({ facility }) {
       timeSlot: form.timeSlot.value,
       hours: Number(form.hours.value),
       totalPrice,
+      status: "pending",
     };
 
     try {
@@ -46,14 +49,14 @@ export function BookingForm({ facility }) {
       const data = await res.json();
 
       if (data.insertedId) {
-        alert("Booking Successful!");
-        form.reset();
+        alert("Booking Confirmed");
+
+        router.push("/bookings");
       }
-    } catch (error) {
-      console.log(error);
     } finally {
       setLoading(false);
     }
+  
   };
 
   return (
@@ -199,13 +202,15 @@ export function BookingForm({ facility }) {
           </p>
         </div>
 
-        <Button
+       
+         <Button
           type="submit"
           isLoading={loading}
           className="w-full bg-[#00FF9D] hover:bg-[#00e68a] text-black font-bold py-3 rounded-2xl text-lg"
         >
           Confirm Booking
         </Button>
+       
       </form>
     </div>
   );
