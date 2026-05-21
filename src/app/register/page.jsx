@@ -52,7 +52,7 @@ export default function RegisterPage() {
     }
   };
 
-   const handleGoogleLogin = async () => {
+  const handleGoogleLogin = async () => {
     try {
     } catch (err) {
       setError("Google login failed");
@@ -82,10 +82,11 @@ export default function RegisterPage() {
                 inputWrapper:
                   "bg-[#1F2937] border-gray-700 hover:border-[#00FF9D] focus-within:border-[#00FF9D]",
               }}
-            > <Label>Name</Label>
-            <Input placeholder="Your Name" />
+            >
+              {" "}
+              <Label>Name</Label>
+              <Input placeholder="Your Name" />
               <FieldError />
-            
             </TextField>
 
             {/* Email */}
@@ -120,10 +121,7 @@ export default function RegisterPage() {
               }}
             >
               <Label>Photo URL</Label>
-              <Input
-                placeholder="https://example.com/photo.jpg"        
-                
-                />
+              <Input placeholder="https://example.com/photo.jpg" />
               <FieldError />
             </TextField>
 
@@ -159,31 +157,31 @@ export default function RegisterPage() {
             {error && <p className="text-red-500 text-sm">{error}</p>}
 
             {/* Register Button */}
-         <div className="flex flex-col gap-2">
-               <Button
-              type="submit"
-              isLoading={loading}
-              className="w-full rounded-2xl bg-[#00FF9D] text-black font-bold"
-            >
-              Register
-            </Button>
-                <p className="flex justify-center text-gray-400 ">Or</p>
-                          <Button
-                         onPress={handleGoogleLogin}
-                         variant="bordered"
-                         className="w-full rounded-2xl border border-gray-300 shadow "
-                       >
-                         <FcGoogle className="text-2xl" />
-                         Continue with Google
-                       </Button>
-         </div>
+            <div className="flex flex-col gap-2">
+              <Button
+                type="submit"
+                isLoading={loading}
+                className="w-full rounded-2xl bg-[#00FF9D] text-black font-bold"
+              >
+                Register
+              </Button>
+              <p className="flex justify-center text-gray-400 ">Or</p>
+              <Button
+                onPress={handleGoogleLogin}
+                variant="bordered"
+                className="w-full rounded-2xl border border-gray-300 shadow "
+              >
+                <FcGoogle className="text-2xl" />
+                Continue with Google
+              </Button>
+            </div>
           </form>
 
           {/* Login Link */}
           <p className="text-center text-sm text-gray-400 mt-2">
-            Already have an account? 
+            Already have an account?
             <Link
-              href="/login"
+              href="/signin"
               className="text-[#00FF9D] font-semibold hover:underline"
             >
               Login
