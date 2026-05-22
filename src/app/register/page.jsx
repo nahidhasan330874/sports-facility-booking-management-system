@@ -33,8 +33,6 @@ export default function RegisterPage() {
             name :user.name,
             image : user.photo
 
- 
-
         }
     )
     

@@ -35,7 +35,7 @@ export default function LoginPage() {
         redirect('/')
     }
     if(error){
-        toast.error('Failed in your Register')
+        alert('Failed in your Register')
     }
 
   };
