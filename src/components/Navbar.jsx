@@ -108,7 +108,7 @@ export default function Navbar() {
 
                   <div className="p-3">
                     <Link
-                      href="/booking"
+                      href="/bookings"
                       className="flex items-center gap-3 rounded-xl p-3 hover:bg-gray-100"
                     >
                       <LayoutDashboard size={20} />
@@ -148,8 +148,7 @@ export default function Navbar() {
             </Link>
           )}
         </div>
-
-        {/* MOBILE */}
+ 
         <button onClick={() => setOpen(!open)} className="lg:hidden">
           {open ? <X /> : <Menu />}
         </button>
@@ -157,7 +156,7 @@ export default function Navbar() {
 
       {open && (
         <div className="border-t bg-white lg:hidden">
-          {/* USER INFO */}
+      
           <div className="px-6 py-5 border-b">
             {user ? (
               <div className="flex items-center gap-3">
@@ -190,7 +189,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* NAV */}
+        
           <div className="flex flex-col px-6 py-5 gap-5">
             {navLinks.map((link) => (
               <Link
@@ -202,8 +201,7 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
-
-            {/* LOGOUT */}
+ 
             {user && (
               <button
                 onClick={async () => {
