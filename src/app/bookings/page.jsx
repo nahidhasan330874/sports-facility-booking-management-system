@@ -20,15 +20,6 @@ async function getBookings() {
 }
 
 export default async function Page() {
-  const session = await auth.api.getSession({
-  headers: new Headers(await headers()),
-});
-
-  
-  if (!session?.user) {
-    redirect("/signin");
-  }
- 
 
 
   const bookings = await getBookings();

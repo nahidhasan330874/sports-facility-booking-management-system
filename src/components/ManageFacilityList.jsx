@@ -9,14 +9,13 @@ import UpdateModal from "./UpdateModal";
 const ManageFacilityList = ({ facilities }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedFacility, setSelectedFacility] = useState(null);
-
-  // 🟡 OPEN MODAL
+ 
   const openModal = (facility) => {
     setSelectedFacility(facility);
     setIsOpen(true);
   };
 
-  // 🟢 DELETE
+ 
   const handleDelete = async (id) => {
     const ok = confirm("Delete Facility?");
     if (!ok) return;
@@ -36,7 +35,6 @@ const ManageFacilityList = ({ facilities }) => {
         facility={selectedFacility}
         setFacility={setSelectedFacility}
       />
-      
       <table className="w-full border rounded-xl overflow-hidden">
         <thead className="bg-[#00FF9D] text-black">
           <tr>

@@ -4,13 +4,33 @@ import { useEffect, useState } from "react";
 import { Button, Card, Input } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaLocationDot, FaPlus } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
+import { FaLocationDot } from "react-icons/fa6";
+import { authClient } from "@/lib/auth-client";
 
 const Facilities = () => {
+  const router = useRouter();
+
   const [facilities, setFacilities] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [query, setQuery] = useState(""); // actual search trigger
+  const [query, setQuery] = useState("");
+  const [user, setUser] = useState(null);
 
+  // get session
+  useEffect(() => {
+    const getSession = async () => {
+      try {
+        const session = await authClient.getSession();
+        setUser(session?.user || null);
+      } catch (err) {
+        setUser(null);
+      }
+    };
+
+    getSession();
+  }, []);
+
+  // fetch facilities
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch("http://localhost:5000/add-facility");
@@ -21,18 +41,17 @@ const Facilities = () => {
     fetchData();
   }, []);
 
-  // filter only when search button clicked
   const filteredFacilities = facilities.filter((item) =>
     item.facilityName.toLowerCase().includes(query.toLowerCase())
   );
 
-  const handleSearch = () => {
-    setQuery(searchText);
-  };
+  const handleSearch = () => setQuery(searchText);
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      setQuery(searchText);
+  const handleBookNow = (id) => {
+    if (!user) {
+      router.push("/signin");
+    } else {
+      router.push(`/facility/${id}`);
     }
   };
 
@@ -40,28 +59,19 @@ const Facilities = () => {
     <div className="mx-auto container">
       <div className="font-bold text-3xl my-5">All Facilities</div>
 
-     
- 
-        <div className="flex justify-end gap-2 w-full">
-          <Input
-            placeholder="Search facility name..."
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            onKeyDown={handleKeyDown}
-            
-          />
+      <div className="flex justify-end gap-2 w-full">
+        <Input
+          placeholder="Search facility name..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+        />
 
-          <Button
-            onClick={handleSearch}
-            className="bg-[#00FF9D] font-bold"
-          >
-            Search
-          </Button>
-        </div>
+        <Button onClick={handleSearch} className="bg-[#00FF9D] font-bold">
+          Search
+        </Button>
+      </div>
 
-     
-
-   
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10 mb-20">
         {filteredFacilities.length > 0 ? (
           filteredFacilities.map((facility) => (
@@ -95,19 +105,16 @@ const Facilities = () => {
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-xl font-bold">
-                      ${facility.price}
-                    </h3>
-                    <span className="text-sm text-gray-500">
-                      per hour
-                    </span>
+                    <h3 className="text-xl font-bold">${facility.price}</h3>
+                    <span className="text-sm text-gray-500">per hour</span>
                   </div>
 
-                  <Link href={`/facility/${facility._id}`}>
-                    <Button className="bg-[#00FF9D] text-black font-semibold">
-                      Book Now
-                    </Button>
-                  </Link>
+                  <Button
+                    onClick={() => handleBookNow(facility._id)}
+                    className="bg-[#00FF9D] text-black font-semibold"
+                  >
+                    Book Now
+                  </Button>
                 </div>
               </div>
             </Card>
