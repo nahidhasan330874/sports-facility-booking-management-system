@@ -7,10 +7,19 @@ const db = client.db("sportNest");
 
 export const auth = betterAuth({
   database: mongodbAdapter(db, {
-    // Optional: if you don't provide a client, database transactions won't be enabled.
     client
   }),
     emailAndPassword: { 
     enabled: true, 
-  }, 
+  },
+  socialProviders:{
+    google: {
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_SECRET
+    }
+  }
+  
 });
+
+console.log(process.env.GOOGLE_CLIENT_ID);
+console.log(process.env.GOOGLE_SECRET);

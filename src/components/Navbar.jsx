@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
-import { Avatar } from "@heroui/react";
+import { Avatar, Button } from "@heroui/react";
+import { authClient } from "@/lib/auth-client";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -17,6 +18,13 @@ export default function Navbar() {
     { name: "Manage My Facilities", path: "/manage-facilities" },
   ];
 
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  console.log(user);
+
+  const handleSignOut = async() => {
+    await authClient.signOut();
+  }
   return (
     <nav className="sticky top-0 z-50  bg-white backdrop-blur-md shadow">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -52,20 +60,51 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <div className="hidden items-center gap-3 lg:flex">
-            <Avatar
-    src="/avatar.png"  
-    name="User"
-    size="sm"
-    className="cursor-pointer"
-  />
-          <Link
-            href="/signin"
-            className="rounded-xl border border-[#00FF9D] px-5 py-2 text-sm font-semibold text-[#00FF9D] transition hover:bg-[#00FF9D] hover:text-black"
-          >
-            Log In
-          </Link>
+        {user ? (
+          <>
+
+           <div className="hidden items-center gap-3 lg:flex">
+         <div className="flex gap-2 items-center">
+          <p className="">{user?.name}</p>
+                      <Avatar size="sm">
+                        <Avatar.Image
+                          alt="John Doe"
+                          src={user?.image}
+                          referrerPolicy="no-referrer"
+                        />
+                        <Avatar.Fallback>{user?.name.charAt(0)}</Avatar.Fallback>
+                      </Avatar>
         </div>
+         <Button onClick={handleSignOut} variant="danger" className="rounded-xl font-bold">
+            Logout
+         </Button>
+        </div>
+
+          </>
+        ) : (
+          <>
+            <div className="hidden items-center gap-3 lg:flex">
+              <div className="flex gap-2 items-center">
+                <p className="">{user?.name}</p>
+                <Avatar size="sm">
+                  <Avatar.Image
+                    alt="John Doe"
+                    src={user?.image}
+                    referrerPolicy="no-referrer"
+                  />
+                  <Avatar.Fallback>{user?.name.charAt(0)}</Avatar.Fallback>
+                </Avatar>
+              </div>
+
+              <Link
+                href="/signin"
+                className="rounded-xl border border-[#00FF9D] px-5 py-2 text-sm font-semibold text-[#00FF9D] transition hover:bg-[#00FF9D] hover:text-black"
+              >
+                Log In
+              </Link>
+            </div>
+          </>
+        )}
 
         <button
           onClick={() => setOpen(!open)}

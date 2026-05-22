@@ -1,8 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 import { FcGoogle } from "react-icons/fc";
 import {
@@ -15,40 +13,38 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
-import { DivideCircle } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+ 
 
 export default function LoginPage() {
-  const router = useRouter();
-
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleLogin = async (e) => {
+  const onSubmit =  async(e) => {
     e.preventDefault();
 
-    setError("");
-    setLoading(true);
-
-    const form = new FormData(e.currentTarget);
-
-    const email = form.get("email");
-    const password = form.get("password");
-
-    try {
-      console.log(email, password);
-    } catch (err) {
-      setError("Invalid email or password");
-    } finally {
-      setLoading(false);
+    const formData = new FormData(e.currentTarget);
+    const user = Object.fromEntries(formData.entries());
+   
+    
+    const {data, error} = await authClient.signIn.email(
+        {
+            email:user.email,
+            password : user.password
+        }
+    )
+    
+    if(data){
+        redirect('/')
     }
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-    } catch (err) {
-      setError("Google login failed");
+    if(error){
+        toast.error('Failed in your Register')
     }
+
   };
+   
+  const handleGoogleSingIn = async() => {
+    await authClient.signIn.social({
+        provider : "google"
+    })
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
@@ -61,7 +57,7 @@ export default function LoginPage() {
 
         <Card className="pb-8">
           <form
-            onSubmit={handleLogin}
+            onSubmit={onSubmit}
             className="flex w-96 mx-auto max-w-sm sm:max-w-md flex-col gap-4"
           >
             <TextField
@@ -108,19 +104,19 @@ export default function LoginPage() {
               <FieldError />
             </TextField>
 
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+           
 
             <div className="flex flex-col gap-2">
               <Button
                 type="submit"
-                isLoading={loading}
+                
                 className="w-full  rounded-2xl bg-[#00FF9D] text-black font-bold mt-5"
               >
                 Login
               </Button>
               <p className="flex justify-center text-gray-400 ">Or</p>
               <Button
-                onPress={handleGoogleLogin}
+                onClick={handleGoogleSingIn}
                 variant="bordered"
                 className="w-full rounded-2xl border border-gray-300 shadow "
               >
@@ -131,7 +127,7 @@ export default function LoginPage() {
           </form>
 
           <p className="text-center text-sm text-gray-400 ">
-            Don&apos;t have an account?{" "}
+            Don&apos;t have an account? 
             <Link
               href="/register"
               className="text-[#00FF9D] font-semibold hover:underline"

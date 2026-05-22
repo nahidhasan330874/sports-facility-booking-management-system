@@ -11,6 +11,7 @@ import {
   Input,
   Label,
   TextField,
+  Toast,
   toast,
 } from "@heroui/react";
 import { FcGoogle } from "react-icons/fc";
@@ -41,10 +42,15 @@ export default function RegisterPage() {
         redirect('/')
     }
     if(error){
-        toast.error('Failed in your Register')
+        alert('Failed in your Register')
     }
-
   };
+
+    const handleGoogleRegister = async() => {
+    await authClient.signIn.social({
+        provider : "google"
+    })
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-10">
@@ -145,6 +151,7 @@ export default function RegisterPage() {
               </Button>
               <p className="flex justify-center text-gray-400 ">Or</p>
               <Button
+               onClick={handleGoogleRegister}
                 variant="bordered"
                 className="w-full rounded-2xl border border-gray-300 shadow "
               >
