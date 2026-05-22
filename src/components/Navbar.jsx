@@ -22,9 +22,9 @@ export default function Navbar() {
   const user = session?.user;
   console.log(user);
 
-  const handleSignOut = async() => {
+  const handleSignOut = async () => {
     await authClient.signOut();
-  }
+  };
   return (
     <nav className="sticky top-0 z-50  bg-white backdrop-blur-md shadow">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -62,24 +62,26 @@ export default function Navbar() {
 
         {user ? (
           <>
-
-           <div className="hidden items-center gap-3 lg:flex">
-         <div className="flex gap-2 items-center">
-          <p className="">{user?.name}</p>
-                      <Avatar size="sm">
-                        <Avatar.Image
-                          alt="John Doe"
-                          src={user?.image}
-                          referrerPolicy="no-referrer"
-                        />
-                        <Avatar.Fallback>{user?.name.charAt(0)}</Avatar.Fallback>
-                      </Avatar>
-        </div>
-         <Button onClick={handleSignOut} variant="danger" className="rounded-xl font-bold">
-            Logout
-         </Button>
-        </div>
-
+            <div className="hidden items-center gap-3 lg:flex">
+              <div className="flex gap-2 items-center">
+                <p className="">{user?.name}</p>
+                <Avatar size="sm">
+                  <Avatar.Image
+                    alt="John Doe"
+                    src={user?.image}
+                    referrerPolicy="no-referrer"
+                  />
+                  <Avatar.Fallback>{user?.name.charAt(0)}</Avatar.Fallback>
+                </Avatar>
+              </div>
+              <Button
+                onClick={handleSignOut}
+                variant="danger-soft"
+                className="rounded-xl font-bold"
+              >
+                Logout
+              </Button>
+            </div>
           </>
         ) : (
           <>

@@ -108,8 +108,6 @@ const AddFacility = () => {
           </div>
         </div>
 
-        
-
         <Button
           type="submit"
           variant="outline"
